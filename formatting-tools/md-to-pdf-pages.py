@@ -96,15 +96,15 @@ if __name__ == "__main__":
     this_root = os.path.dirname(os.path.realpath(__file__))
     
     print(
-        colored("\n[NOTE]", "light_red"),
+        colored("\n[NOTE]", "red"),
         f"Ensure that the markdown source file is in the same directory as this script ({this_root})",
     )
     print(
-        colored("[NOTE]", "light_red"),
+        colored("[NOTE]", "red"),
         "Also make sure all pictures embedded in that markdown are also in that directory, otherwise they won't be included in the PDF.",
     )
     print(
-        colored("[NOTE]", "light_red"),
+        colored("[NOTE]", "red"),
         "Make sure to put a blank line before any numbered/ordered lists in the markdown file\n",
     )
     
@@ -124,7 +124,7 @@ if __name__ == "__main__":
         file = input(
             colored(
                 "\nEnter the filename of the md file in this script's dir:\n> ",
-                "light_green",
+                "green",
             )
         )
     
