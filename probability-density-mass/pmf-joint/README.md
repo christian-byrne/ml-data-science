@@ -1,0 +1,1 @@
+![alt text](pictures/joint-pmf-and-joint-pdf.png)

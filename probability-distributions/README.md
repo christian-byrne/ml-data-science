@@ -1280,3 +1280,8 @@ Where:
 - **Covariance of a Constant**: $Cov(c, X) = 0$
 - **Covariance of a Random Variable with Itself**: $Cov(X, X) = Var(X)$
 - **Covariance of Independent Random Variables**: $Cov(X, Y) = 0$
+
+----
+
+
+![alt text](.pictures/standard-norma-distr-corollaries.png)

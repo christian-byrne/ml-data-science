@@ -1,0 +1,1 @@
+![alt text](pictures/marginal-pmf-multivariate.png)
