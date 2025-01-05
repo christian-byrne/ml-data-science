@@ -1,0 +1,95 @@
+# Modeling
+
+- Model is an idealized representation of a system
+- First-Principle Models
+  - Based on physical laws
+  - E.g., Newton's laws of motion
+- Data-Driven Models
+  - Based on data
+  - E.g., predicting stock prices using linreg
+- Bias-Variance tradeoff
+  - **Bias**
+    - Error from erroneous assumptions in model
+    - High bias $\rightarrow$ underfitting
+    - First-principle models have bias
+  - **Variance**
+    - Error from sensitivity to small fluctuations in training data
+    - High variance $\rightarrow$ overfitting
+    - Data-driven models may overfit (have variance)
+- Pipeline
+  - Choose model
+  - Choose loss function
+    - Quantifies prediction error
+  - Fit model
+    - Tune hyperparameters
+  - Evaluate model performance
+- Variable types
+  - Features / Inputs / Predictors / Explanatory Variables / Independent Variables
+  - Target / Output / Response / Dependent Variable
+
+# Linear Regression
+
+- Find $\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n$ that best fits the set of points
+- Residual of data point $(x_i, y_i)$ is $y_i - \hat{y}_i$
+  - Difference between actual and predicted value
+  - Similar to deviation/error
+- Residual sum of squares (RSS)
+  - $\text{RSS} = \sum_{i=1}^n (y_i - \hat{y}_i)^2 = \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_{i1} - \beta_2 x_{i2} - \ldots - \beta_n x_{in})^2$
+  - Sum of all magnitudes of residuals squared
+  - To minimize:
+    - Find $\beta_0, \beta_1, \ldots, \beta_n$ that minimize RSS
+  - Recall that $\mu \in \bar{\overline{X}} \pm k \times \frac{\sigma}{\sqrt{n}}$
+    - Applied to $\beta_0, \beta_1, \ldots, \beta_n$:
+      - 95% CI for $\beta_0$ is $\hat{\beta_0} \pm 2 \times \text{SE}(\hat{\beta_0})$
+      - 95% CI for $\beta_1$ is $\hat{\beta_1} \pm 2 \times \text{SE}(\hat{\beta_1})$
+      - $\text{SE}$ is found by taking square root of variance of $\hat{\beta_0}$ or $\hat{\beta_1}$
+  - $\hat{\beta_1} = \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^n (x_i - \bar{x})^2}$
+    - Slope coefficient: average change in $y$ for a one-unit change in $x$
+  - $\hat{\beta_0} = \bar{y} - \hat{\beta_1} \bar{x}$
+    - Intercept coefficient: value of $y$ when $x = 0$n
+- Accuracy Metrics
+  - $\text{RSE} = \sqrt{\frac{1}{n-2} \text{RSS}}$
+    - Residual Standard Error
+    - Measures the average amount that the response will deviate from the true regression line
+  - $R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}$
+    - Coefficient of determination
+    - Same as square of correlation coefficient in simple LR
+    - Fraction of variability of $y$ explained using $x$
+      - Measures the proportion of variance in the dependent variable that is predictable from the independent variable(s)
+    - $R^2 = 1 - \frac{\text{RSS}}{\text{TSS}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n (y_i - \bar{y})^2}$
+    - $R^2$ close to 1 $\rightarrow$ model explains a large portion of the variance in the dependent variable
+    - $R^2$ close to 0 $\rightarrow$ model explains little variance in the dependent variable
+- Multiple LR
+  - Minimizing RSS in multiple dimensions
+    - Method 1: Algebraic closed form formula
+      - Vector $\beta$ minimizing MSE is $\beta = (X^T X)^{-1} X^T y$
+      - Slow, prone to numerical instability, hard to generalize to other optimization problems
+    - Method 2: Gradient Descent
+      - Plot RSS as a function of $\beta$
+        - With just one variable, it is a simple 2D parabola (quadratic)
+      - Move along RSS hyperplane based on current slope
+        - Negative slope $\rightarrow$ move in positive direction
+        - Positive slope $\rightarrow$ move in negative direction
+      - Repeat until convergence
+        - Convergence when slope is 0
+        - $\beta_1^{(t+1)} = \beta_1^{(t)} - \alpha \frac{\partial \text{RSS}}{\partial \beta_1}$
+          - next guess for $\beta$ = current $\beta$ - learning rate $\times$ slope of RSS curve at current $\beta$ (moving opposite to the slope)
+          - $\alpha$ is learning rate
+            - Small $\alpha$ $\rightarrow$ slow convergence, less likely to overshoot
+            - Large $\alpha$ $\rightarrow$ fast convergence, more likely to overshoot
+          - $\frac{\partial \text{RSS}}{\partial \beta_1}$ is the slope of the RSS curve at $\beta_1$
+      - Iteratively update $\beta$ to minimize RSS
+      - Works in many dimensions because loss function remains convex
+        - Convex $\rightarrow$ only one minimum
+        - Non-convex $\rightarrow$ multiple minima, so gradient descent may not find global minimum, but still acceptable
+    - Method 3: Stochastic or Mini-Batch Gradient Descent
+      - Each partial derivative in GD hides a lot of computations
+      - Use a subset of data at each update (mini-batch)
+        - One training epoch: one pass through each $x%$ of data (updating each time)
+        - in single epoch, every datapoint used once
+        - Several training epochs performed as necessary
+      - Stochastic: use one data point at each update
+        - Extreme case of mini-batch where each subset is a single datapoint
+- True relationship between response and predictor non-linear $\rightarrow$ extend using polynomial regression
+  - Create $\text{feature}^2, \text{feature}^3, \ldots$ as new features
+- Using qualitative features in LR: one-hot encoding

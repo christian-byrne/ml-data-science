@@ -1,0 +1,1 @@
+![alt text](.pictures/t-distribution.png)

@@ -1,0 +1,15 @@
+- **Inverse Transform Sampling**
+  - *Goal*: Let $X$ be a random variable whose distribution can be described by a CDF $F(x)$. We want to generate values of $X$, but for them to be valid they should be distributed according to $F(x)$. That is, if we genreate 10 random values of $X$ they should genearlly follow the distribution of $F(x)$. However, we don't know the domain of $X$ intimiately enough to generate values directly, so our randomly generated values may not be distributed according to $F(x)$.
+  - *Method*: 
+    - (1) Find the inverse of the CDF $F(x)$, which is $F^{-1}(x)$.
+    - (2) Generate a random value $U$ from a uniform distribution on $[0, 1]$.
+      - Since the range of probabilities is $[0, 1]$, generating a random number from $U$ can be accurately done.
+    - (3) Plug $U$ into the inverse CDF $F^{-1}(U)$.
+      - This will give you a value of $X$ associated with the probability $U$.
+      - When done multiple times, the values of $X$ generated will be distributed according to $F(x)$.
+  - *Example*:
+    - Let $X$ be a random variable with CDF $F(x) = 1 - e^{-x}$ for $x \geq 0$.
+    - (1) Find the inverse of $F(x)$: $F^{-1}(x) = -\ln(1 - x)$.
+    - (2) Generate a random value $U$ from a uniform distribution on $[0, 1]$. Say $U = 0.5$.
+    - (3) Plug $U$ into the inverse CDF: $F^{-1}(0.5) = -\ln(1 - 0.5) = -\ln(0.5) = 0.6931$.
+    - The value of $X$ associated with the probability $0.5$ is $0.6931$. Add this to a list of generated values of $X$.
