@@ -1,0 +1,46 @@
+## Logistic Regression
+
+- Model probability curve
+  - $P(y = 1 | x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n)}}$
+  - $P(y = 0 | x) = 1 - P(y = 1 | x)$
+- From LR we know to work with unbounded functions, choose odds function
+  - $\text{odds} = \frac{P(y = 1 | x)}{1 - P(y = 1 | x)}$
+  - To make linear, take log of odds
+    - $\log(\text{odds}) = \log\left(\frac{P(y = 1 | x)}{1 - P(y = 1 | x)}\right) = e^{\beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n}$
+    - $\implies p = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \ldots + \beta_n x_n)}}$
+- Loss functionto minimize
+  - Cross-entropy loss (CE)
+  - $L(\beta) = -\sum_{i=1}^n y_i \log(p_i) + (1 - y_i) \log(1 - p_i)$
+    - where $p_i = P(y_i = 1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_{i1} + \ldots + \beta_n x_{in})}}$
+      - High prob positive + actual positive $\rightarrow$ low error contribution
+      - High prob positive + actual negative $\rightarrow$ high error contribution
+      - Low prob positive + actual positive $\rightarrow$ high error contribution
+      - Low prob positive + actual negative $\rightarrow$ low error contribution
+  - Likelihood: probability of observed data viewed as a function of the parameters of a statistical model
+    - $L(\theta | x) = P_{\theta}(X = x)$
+    - $\theta$ is parameter, $x$ is data
+    - Maximum Likelihood Estimation (MLE): find $\theta$ that maximizes $L(\theta | x)$
+      - $\theta_{\text{MLE}} = \arg \max_{\theta} L(\theta | x)$
+      - Estimate parameters that makes observed data most probable
+      - $P(Y_i = 1) = p_i$, $P(Y_i = 0) = 1 - p_i$
+        - Combined: $P(Y_i = y_i) = p_i^{y_i} (1 - p_i)^{1 - y_i}$
+        - Probability of entire set = probability of each data point multiplied
+          - $\prod_{i=1}^n p_i^{y_i} (1 - p_i)^{1 - y_i}$ (likelihood of data)
+        - Maximize data liklihood, take log so we can use derivative
+          - $\log \left( \prod_{i=1}^n p_i^{y_i} (1 - p_i)^{1 - y_i} \right) = \sum_{i=1}^n y_i \log(p_i) + (1 - y_i) \log(1 - p_i)$
+            - Log-likelihood of data
+        - Maximize log-likelihood $\equiv$ Minimize negative log-likelihood $\equiv$ Minimize cross-entropy loss
+        - $L(\beta) = -\sum_{i=1}^n y_i \log(p_i) + (1 - y_i) \log(1 - p_i)$
+- Multi-class
+  - Apply numerical value to ordinal
+  - Multiple one-vs-rest classifiers
+    - Train $k$ classifiers, one for each class
+    - Classify as the class with the highest probability
+    - Each classifier trained on one class vs all others
+- Resolving class imbalance
+  - Discard member of larger class to enforce balance
+  - Recplicate items from small class with random noise
+  - Weigh the smaller class instances more in the loss function
+    - dict of class and weight associations
+- Regularization: Minimize CE + $\lambda \sum_{j=1}^p \beta_j^2$
+  - L1 regularization not used because it makes the loss function non-differentiable

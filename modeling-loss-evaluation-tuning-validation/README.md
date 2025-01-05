@@ -1,0 +1,92 @@
+## Evaluation
+
+- Baseline Models
+  - Classification
+    - Uniform: assign one label to all
+    - Blind: assign labels randomly
+    - Majority: assign most common label
+    - Best single-variable subset
+    - Same label as previous point in time
+    - Models built by other scientists
+  - Prediction (Regression)
+    - Mean: predict mean of target variable
+    - Median: predict median of target variable
+    - Linear regression
+    - Models built by other scientists
+- Confusion matrix
+  - | | Predicted Positive | Predicted Negative |
+    | --- | --- | --- |
+    | Actual Positive | True Positive (TP) | False Negative (FN) |
+    | Actual Negative | False Positive (FP) | True Negative (TN) | 
+- Metrics
+  - Classifiers (output is categorical)
+    - Binary
+      - **Accuracy**
+        - $\frac{TP + TN}{TP + TN + FP + FN}$
+        - Ratio of correct predictions over all predictions
+        - Misleading if class imbalance, need measures sensitive to getting more $TP$
+      - **Precision**
+        - $\frac{TP}{TP + FP}$
+        - Ratio of correct positive predictions over all positive predictions $\rightarrow$ can be used to minimize false positives
+        - Use if FN okay, FP not okay
+        - High precision hard if unbalanced classes
+          - Many positive preds $\rightarrow$ most miss mark
+          - Few positive preds $\rightarrow$ few will catch rare positives
+      - **Recall (True Positive Rate)**
+        - $\frac{TP}{TP + FN}$
+        - Ratio of correct positive predictions over all actual positive instances $\rightarrow$ can be used to minimize false negatives
+        - Use if FP okay, FN not okay
+      - **False Positive Rate**
+        - $\frac{FP}{FP + TN}$
+        - Ratio of incorrect positive predictions over all actual negative instances
+      - **F1 Score**
+        - $2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$
+        - Harmonic mean of precision and recall
+        - Use if FP and FN not okay (i.e., both precision and recall must be good)
+      - **ROC Curve**
+        - Class prediction via some score reflecting _in classness_
+        - Receiver Operating Characteristic
+        - Plots TPR (Recall) vs FPR for each threshold
+          - Threshold refers to a cutoff value used by the classification model to determine whether a predicted probability corresponds to a positive or negative class
+            - If threshold is $0.5$, a probability $\geq 0.5$ is classified as positive
+            - If the threshold is lowered to $0.3$, more instances will be classified as positive
+        - Each point on the ROC curve corresponds to a specific threshold used to classify probabilities into positive or negative predictions
+        - By varying the threshold from 0 to 1, you get a set of $(FPR, TPR)$ pairs
+          - These are plotted to form the ROC curve
+        - AUC (Area Under Curve) $\rightarrow$ higher is better
+          - How good is score defining the classification
+          - Max is $1$
+    - Multi-class
+      - Accuracy is same
+      - Precision, Recall, F1 Score are calculated for each class
+        - Macro-averaging: average of metrics for each class
+        - Micro-averaging: sum of TP, FP, FN for all classes
+          - $\text{precision}_i = C[i, i] / \sum_j C[j, i]$ (where $C$ is confusion matrix)
+          - $\text{recall}_i = C[i, i] / \sum_j C[i, j]$
+  - Prediction (output is numerical)
+    - Good predictor $\rightarrow$ distribution of errors centered around 0, bell-shaped, extreme outliers rare
+    - Predictions = $\hat{y} = \{\hat{y}_1, \hat{y}_2, \ldots, \hat{y}_n\}$
+    - Actual values = $y = \{y_1, y_2, \ldots, y_n\}$
+    - Absolute error = $|\hat{y}_i - y_i|$
+      - Sign distinguishes over/under prediction
+      - Can't aggregate because sign offsets
+    - Relative error = $\frac{|\hat{y}_i - y_i|}{y_i}$
+      - Unit-less so aggregatable
+    - Squared error = $(\hat{y}_i - y_i)^2$
+      - Can also be summed
+      - Penalizes large errors more than absolute error $\rightarrow$ outliers may dominate
+    - Mean Squared Error (MSE)
+      - $\frac{1}{n} \sum_{i=1}^n (\hat{y}_i - y_i)^2$
+      - Outliers dominate, median squared better for noisy
+    - Root Mean Squared Error (RMSD)
+      - $\sqrt{\frac{1}{n} \sum_{i=1}^n (\hat{y}_i - y_i)^2}$
+      - maintains original magnitude
+- K-fold cross validation
+  - May have selected validation set not representative by random chance
+  - Useful for small datasets, hyperparameter tuning
+- Dot products measure how in-sync two vector are (like covariance or correlation)
+  - $A \cdot A^T$ measure in-syncness among rows
+  - $A^T \cdot A$ measure in-syncness among columns
+- Cosine similarity
+  - $\cos(\theta) = \frac{A \cdot B}{||A|| \times ||B||}$
+  - Since dot product of two rows is a measure of how similar they are, cosine similarity is a standardized/normalized version of this (angle between two vectors)

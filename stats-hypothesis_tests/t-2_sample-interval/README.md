@@ -1,0 +1,1 @@
+![alt text](.pictures/2-sample-t-test-t-interval.png)
